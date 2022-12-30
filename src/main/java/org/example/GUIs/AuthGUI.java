@@ -1,6 +1,5 @@
 package org.example.GUIs;
 
-import java.awt.EventQueue;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 

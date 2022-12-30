@@ -1,6 +1,10 @@
 package org.example.Entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +17,9 @@ public class Consultation {
     private String description;
     private boolean nextTime;
     private double price;
+    @ColumnDefault("boolean default false")
     private boolean isPaid;
+    @ColumnDefault("boolean default false")
     private boolean isCanceled;
     @ManyToOne
     private Doctor doctor;
@@ -23,6 +29,16 @@ public class Consultation {
     private Patient patient;
     @ManyToOne
     private TypeConsultation type;
+
+    public Consultation(LocalDateTime dateTime, String description, boolean nextTime, double price) {
+        this.dateTime = dateTime;
+        this.description = description;
+        this.nextTime = nextTime;
+        this.price = price;
+    }
+
+    public Consultation() {
+    }
 
     public Long getId() {
         return id;

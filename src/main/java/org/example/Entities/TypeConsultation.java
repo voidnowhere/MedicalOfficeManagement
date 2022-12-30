@@ -17,6 +17,14 @@ public class TypeConsultation {
     @OneToMany
     private List<Consultation> consultations;
 
+    public TypeConsultation(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public TypeConsultation() {
+    }
+
     public Long getId() {
         return id;
     }

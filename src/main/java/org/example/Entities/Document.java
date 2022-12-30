@@ -1,6 +1,7 @@
 package org.example.Entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -11,9 +12,17 @@ public class Document {
     @GeneratedValue
     private Long id;
     private String description;
+    @CreationTimestamp
     private LocalDateTime dateTime;
     @ManyToOne
     private Record record;
+
+    public Document(String description) {
+        this.description = description;
+    }
+
+    public Document() {
+    }
 
     public Long getId() {
         return id;

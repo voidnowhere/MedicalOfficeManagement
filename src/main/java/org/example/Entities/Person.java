@@ -12,10 +12,23 @@ public class Person {
     private Long id;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String nic;
     private String address;
     private LocalDate birthday;
     private String phoneNumber;
+
+    public Person(String firstName, String lastName, String nic, String address, LocalDate birthday, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.nic = nic;
+        this.address = address;
+        this.birthday = birthday;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Person() {
+    }
 
     public Long getId() {
         return id;

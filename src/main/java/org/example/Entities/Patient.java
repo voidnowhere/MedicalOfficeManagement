@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -12,6 +13,13 @@ public class Patient extends Person {
     private Record record;
     @OneToMany
     private List<Consultation> consultations;
+
+    public Patient(String firstName, String lastName, String nic, String address, LocalDate birthday, String phoneNumber) {
+        super(firstName, lastName, nic, address, birthday, phoneNumber);
+    }
+
+    public Patient() {
+    }
 
     public Record getRecord() {
         return record;

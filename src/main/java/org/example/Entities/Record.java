@@ -15,6 +15,13 @@ public class Record {
     @OneToMany
     private List<Document> documents;
 
+    public Record(String description) {
+        this.description = description;
+    }
+
+    public Record() {
+    }
+
     public Long getId() {
         return id;
     }
