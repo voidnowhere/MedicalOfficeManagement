@@ -17,8 +17,9 @@ public class Document {
     @ManyToOne
     private Record record;
 
-    public Document(String description) {
+    public Document(String description, Record record) {
         this.description = description;
+        this.record = record;
     }
 
     public Document() {

@@ -15,8 +15,9 @@ public class Record {
     @OneToMany
     private List<Document> documents;
 
-    public Record(String description) {
+    public Record(String description, Patient patient) {
         this.description = description;
+        this.patient = patient;
     }
 
     public Record() {

@@ -26,11 +26,15 @@ public class Consultation {
     @ManyToOne
     private TypeConsultation type;
 
-    public Consultation(LocalDateTime dateTime, String description, boolean nextTime, double price) {
+    public Consultation(LocalDateTime dateTime, String description, boolean nextTime, double price, Doctor doctor, Receptionist receptionist, Patient patient, TypeConsultation type) {
         this.dateTime = dateTime;
         this.description = description;
         this.nextTime = nextTime;
         this.price = price;
+        this.doctor = doctor;
+        this.receptionist = receptionist;
+        this.patient = patient;
+        this.type = type;
     }
 
     public Consultation() {
