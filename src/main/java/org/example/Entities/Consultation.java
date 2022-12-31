@@ -1,10 +1,6 @@
 package org.example.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import org.hibernate.annotations.ColumnDefault;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +13,9 @@ public class Consultation {
     private String description;
     private boolean nextTime;
     private double price;
-    @ColumnDefault("boolean default false")
+    @Column(columnDefinition = "boolean default false")
     private boolean isPaid;
-    @ColumnDefault("boolean default false")
+    @Column(columnDefinition = "boolean default false")
     private boolean isCanceled;
     @ManyToOne
     private Doctor doctor;
