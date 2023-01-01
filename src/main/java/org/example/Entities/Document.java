@@ -11,6 +11,7 @@ public class Document {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(length = 1000)
     private String description;
     @CreationTimestamp
     private LocalDateTime dateTime;
