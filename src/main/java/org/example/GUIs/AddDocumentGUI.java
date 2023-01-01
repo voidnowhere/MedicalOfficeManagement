@@ -23,6 +23,7 @@ public class AddDocumentGUI extends JFrame {
         this.patientRecordGUI = patientRecordGUI;
         this.record = record;
         //
+        setResizable(false);
         setTitle("Add Document");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 450, 400);

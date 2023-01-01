@@ -20,6 +20,7 @@ public class UpdateDocumentGUI extends JFrame {
         this.patientRecordGUI = patientRecordGUI;
         this.document = document;
         //
+        setResizable(false);
         setTitle("Update Document");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 450, 300);

@@ -26,6 +26,7 @@ public class PatientRecordGUI extends JFrame {
     private Record record;
 
     public PatientRecordGUI() {
+        setResizable(false);
         setTitle("Patient Record");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 520);
