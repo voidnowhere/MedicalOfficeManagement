@@ -36,4 +36,8 @@ public class Patient extends Person {
     public void setConsultations(List<Consultation> consultations) {
         this.consultations = consultations;
     }
+
+    public String getFullName() {
+        return getLastName() + " " + getFirstName();
+    }
 }

@@ -9,6 +9,7 @@ public class Record {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(length = 2500)
     private String description;
     @OneToOne
     private Patient patient;
