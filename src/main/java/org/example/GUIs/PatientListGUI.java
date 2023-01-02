@@ -93,6 +93,7 @@ public class PatientListGUI extends JFrame {
         setVisible(true);
         btnADDPatientToList.addActionListener(e -> {
             new PatientManagementGUI();
+
         });
 
     }
