@@ -41,4 +41,8 @@ public class Patient extends Person {
     public boolean isMinor() {
         return ChronoUnit.YEARS.between(getBirthday(), LocalDate.now()) < 18;
     }
+
+    public String getFullName() {
+        return getLastName() + " " + getFirstName();
+    }
 }

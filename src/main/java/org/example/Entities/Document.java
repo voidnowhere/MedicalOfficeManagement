@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Document {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 1000)
     private String description;
     @CreationTimestamp
     private LocalDateTime dateTime;

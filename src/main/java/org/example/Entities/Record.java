@@ -7,8 +7,9 @@ import java.util.List;
 @Entity
 public class Record {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 2500)
     private String description;
     @OneToOne
     private Patient patient;
