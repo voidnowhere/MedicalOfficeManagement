@@ -29,8 +29,8 @@ public class PatientManagementGUI extends JFrame {
     private JTextField textField_PhoneNumber;
     private JTextField textField_CIN;
 
-    public PatientManagementGUI() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public PatientManagementGUI(PatientListGUI patientListGUI) {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(52, 50, 337, 337);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -152,6 +152,7 @@ public class PatientManagementGUI extends JFrame {
         );
         contentPane.setLayout(gl_contentPane);
         setLocationRelativeTo(null);
+        setResizable(false);
         setVisible(true);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -166,11 +167,21 @@ public class PatientManagementGUI extends JFrame {
                     return;
             }
             EntityManager entityManager = HibernateUtil.getSessionFactory().createEntityManager();
+            long count = entityManager
+                    .createQuery("select count(p) from Patient p where p.nic = :nic", Long.class)
+                    .setParameter("nic" , textField_CIN.getText()).getSingleResult();
+            if (count > 0){
+                JOptionPane.showMessageDialog(this, "NIC Already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            };
             Patient patient = new Patient(textField_FirstName.getText(),textField_LastName.getText(),textField_CIN.getText(),textField_Address.getText(), LocalDate.parse(dateField.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),textField_PhoneNumber.getText());
             entityManager.getTransaction().begin();
             entityManager.persist(patient);
             entityManager.getTransaction().commit();
             entityManager.close();
+            JOptionPane.showMessageDialog(this, "Patient created successfully", "Done", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+            patientListGUI.fillPatientsTable();
         });
     }
 }

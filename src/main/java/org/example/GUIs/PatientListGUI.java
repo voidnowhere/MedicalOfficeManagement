@@ -1,5 +1,10 @@
 package org.example.GUIs;
 
+import jakarta.persistence.EntityManager;
+import org.example.Entities.Patient;
+import org.example.Models.HibernateUtil;
+import org.example.Models.PatientManagementModel;
+
 import javax.swing.*;
 import java.awt.EventQueue;
 
@@ -20,17 +25,18 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 public class PatientListGUI extends JFrame {
     private JPanel contentPane;
-    private JTable table;
-    private JTable table_Patient;
+    private JTable tablePatients;
+    private JScrollPane scrollPanePatients;
+
     private JLabel lblPatientList;
 
 
-
+private PatientManagementModel patientManagementModel;
 
 
     public PatientListGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(52, 50, 501, 337);
+        setBounds(52, 50, 531, 337);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -42,59 +48,60 @@ public class PatientListGUI extends JFrame {
             }
         });
         btnADDPatientToList.setFont(new Font("Tahoma", Font.BOLD, 12));
-
-        table = new JTable();
-
-        table_Patient = new JTable();
-        table_Patient.setModel(new DefaultTableModel(
-                new Object[][] {
-                },
-                new String[] {
-                        "First Name", "Last Name", "CIN", "Address", "Birthday", "Phone Number"
-                }
-        ));
+        DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
 
         lblPatientList = new JLabel("Patient List");
         lblPatientList.setFont(new Font("Tahoma", Font.BOLD, 15));
+        EntityManager entityManager = HibernateUtil.getSessionFactory().createEntityManager();
+        patientManagementModel = new PatientManagementModel(entityManager
+                .createQuery("select p from Patient p", Patient.class)
+                .getResultList());
+        tablePatients = new JTable(patientManagementModel);
+        scrollPanePatients = new JScrollPane(tablePatients);
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(
                 gl_contentPane.createParallelGroup(Alignment.LEADING)
                         .addGroup(gl_contentPane.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
-                                        .addComponent(table_Patient, GroupLayout.PREFERRED_SIZE, 465, GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+                                .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+                                        .addGroup(gl_contentPane.createSequentialGroup()
                                                 .addComponent(lblPatientList, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(btnADDPatientToList, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(table, GroupLayout.PREFERRED_SIZE, 1, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
+                                                .addPreferredGap(ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
+                                                .addComponent(btnADDPatientToList, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(scrollPanePatients, GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
+                                .addGap(29))
         );
         gl_contentPane.setVerticalGroup(
                 gl_contentPane.createParallelGroup(Alignment.LEADING)
                         .addGroup(gl_contentPane.createSequentialGroup()
-                                .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-                                        .addGroup(gl_contentPane.createSequentialGroup()
-                                                .addGap(159)
-                                                .addComponent(table, GroupLayout.PREFERRED_SIZE, 1, GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(gl_contentPane.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-                                                        .addComponent(lblPatientList, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btnADDPatientToList, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(table_Patient, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap()
+                                .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+                                        .addComponent(lblPatientList, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnADDPatientToList, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(scrollPanePatients, GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                                .addContainerGap())
         );
         contentPane.setLayout(gl_contentPane);
-        contentPane.setLayout(gl_contentPane);
         setLocationRelativeTo(null);
+        setTitle("Patients list");
+        setResizable(false);
         setVisible(true);
         btnADDPatientToList.addActionListener(e -> {
-            new PatientManagementGUI();
+            new PatientManagementGUI(this);
 
         });
+
+    }
+    public void fillPatientsTable(){
+
+        EntityManager entityManager = HibernateUtil.getSessionFactory().createEntityManager();
+        patientManagementModel.setPatients(entityManager
+                .createQuery("select p from Patient p", Patient.class)
+                .getResultList()
+        );
+        entityManager.close();
+        patientManagementModel.fireTableDataChanged();
 
     }
 }
