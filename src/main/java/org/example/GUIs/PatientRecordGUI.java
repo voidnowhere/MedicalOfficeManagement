@@ -6,7 +6,7 @@ import org.example.Entities.Document;
 import org.example.Entities.Patient;
 import org.example.Entities.Record;
 import org.example.Models.DocumentTableModel;
-import org.example.Models.HibernateUtil;
+import org.example.Models.EntityManagerInstance;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -126,7 +126,7 @@ public class PatientRecordGUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "NIC is required!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            EntityManager entityManager = HibernateUtil.getSessionFactory().createEntityManager();
+            EntityManager entityManager = EntityManagerInstance.getNewInstance();
             try {
                 patient = entityManager
                         .createQuery("select p from Patient p where p.nic = ?1", Patient.class)
@@ -162,7 +162,7 @@ public class PatientRecordGUI extends JFrame {
                     JOptionPane.showMessageDialog(this, "Description should not exceed 2500 character!", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                EntityManager entityManager = HibernateUtil.getSessionFactory().createEntityManager();
+                EntityManager entityManager = EntityManagerInstance.getNewInstance();
                 entityManager.getTransaction().begin();
                 record.setDescription(textAreaRecordDescription.getText());
                 entityManager.merge(record);
@@ -184,7 +184,7 @@ public class PatientRecordGUI extends JFrame {
     }
 
     public void fillTableDocuments() {
-        EntityManager entityManager = HibernateUtil.getSessionFactory().createEntityManager();
+        EntityManager entityManager = EntityManagerInstance.getNewInstance();
         documentTableModel.setDocuments(entityManager
                 .createQuery("select d from Document d where d.record.id = :rid order by dateTime desc", Document.class)
                 .setParameter("rid", record.getId())

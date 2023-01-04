@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import org.example.Entities.MedicalCertificate;
 import org.example.Entities.Prescription;
 import org.example.Entities.Record;
-import org.example.Models.HibernateUtil;
+import org.example.Models.EntityManagerInstance;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -97,7 +97,7 @@ public class AddDocumentGUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "Description should not exceed 1000 character!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            EntityManager entityManager = HibernateUtil.getSessionFactory().createEntityManager();
+            EntityManager entityManager = EntityManagerInstance.getNewInstance();
             entityManager.getTransaction().begin();
             if (comboBoxDocumentType.getSelectedIndex() == 0) { // Prescription
                 entityManager.persist(new Prescription(textAreaDocumentDescription.getText(), record));

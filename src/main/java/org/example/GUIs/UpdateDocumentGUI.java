@@ -2,7 +2,7 @@ package org.example.GUIs;
 
 import jakarta.persistence.EntityManager;
 import org.example.Entities.Document;
-import org.example.Models.HibernateUtil;
+import org.example.Models.EntityManagerInstance;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -74,7 +74,7 @@ public class UpdateDocumentGUI extends JFrame {
                     JOptionPane.showMessageDialog(this, "Description should not exceed 1000 character!", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                EntityManager entityManager = HibernateUtil.getSessionFactory().createEntityManager();
+                EntityManager entityManager = EntityManagerInstance.getNewInstance();
                 entityManager.getTransaction().begin();
                 document.setDescription(textAreaDocumentDescription.getText());
                 entityManager.merge(document);
