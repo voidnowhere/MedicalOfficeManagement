@@ -1,11 +1,8 @@
 package org.example.GUIs;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import org.example.Entities.*;
-import org.example.Entities.Record;
-import org.example.Models.HibernateUtil;
-import org.example.Models.PatientManagementModel;
+import org.example.Entities.Patient;
+import org.example.Models.EntityManagerInstance;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -18,8 +15,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PatientManagementGUI extends JFrame {
     private JPanel contentPane;
@@ -166,7 +161,7 @@ public class PatientManagementGUI extends JFrame {
                     JOptionPane.showMessageDialog(this, "All fields are required", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
             }
-            EntityManager entityManager = HibernateUtil.getSessionFactory().createEntityManager();
+            EntityManager entityManager = EntityManagerInstance.getNewInstance();
             long count = entityManager
                     .createQuery("select count(p) from Patient p where p.nic = :nic", Long.class)
                     .setParameter("nic" , textField_CIN.getText()).getSingleResult();

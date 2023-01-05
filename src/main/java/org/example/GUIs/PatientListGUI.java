@@ -2,27 +2,18 @@ package org.example.GUIs;
 
 import jakarta.persistence.EntityManager;
 import org.example.Entities.Patient;
-import org.example.Models.HibernateUtil;
+import org.example.Models.EntityManagerInstance;
 import org.example.Models.PatientManagementModel;
 
 import javax.swing.*;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.Font;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.awt.event.ActionEvent;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 public class PatientListGUI extends JFrame {
     private JPanel contentPane;
     private JTable tablePatients;
@@ -52,10 +43,11 @@ private PatientManagementModel patientManagementModel;
 
         lblPatientList = new JLabel("Patient List");
         lblPatientList.setFont(new Font("Tahoma", Font.BOLD, 15));
-        EntityManager entityManager = HibernateUtil.getSessionFactory().createEntityManager();
+        EntityManager entityManager = EntityManagerInstance.getNewInstance();
         patientManagementModel = new PatientManagementModel(entityManager
                 .createQuery("select p from Patient p", Patient.class)
                 .getResultList());
+        entityManager.close();
         tablePatients = new JTable(patientManagementModel);
         scrollPanePatients = new JScrollPane(tablePatients);
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -95,7 +87,7 @@ private PatientManagementModel patientManagementModel;
     }
     public void fillPatientsTable(){
 
-        EntityManager entityManager = HibernateUtil.getSessionFactory().createEntityManager();
+        EntityManager entityManager = EntityManagerInstance.getNewInstance();
         patientManagementModel.setPatients(entityManager
                 .createQuery("select p from Patient p", Patient.class)
                 .getResultList()
