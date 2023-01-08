@@ -1,6 +1,5 @@
 package org.example.Models;
 
-import jakarta.persistence.Column;
 import org.example.Entities.Patient;
 
 import javax.swing.table.AbstractTableModel;
@@ -47,4 +46,7 @@ public class PatientManagementModel extends AbstractTableModel {
         this.patients = patients;
     }
 
+    public Patient getPatient(int rowIndex){
+        return patients.get(rowIndex);
+    }
 }
