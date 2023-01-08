@@ -170,6 +170,7 @@ public class EditPtientGUI extends JFrame {
             patient.setAddress(textField_Address.getText());
             patient.setBirthday(LocalDate.parse(dateField.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             patient.setPhoneNumber(textField_PhoneNumber.getText());
+            entityManager.merge(patient);
             entityManager.getTransaction().commit();
             entityManager.close();
             JOptionPane.showMessageDialog(this, "Patient updated successfully", "Done", JOptionPane.INFORMATION_MESSAGE);
