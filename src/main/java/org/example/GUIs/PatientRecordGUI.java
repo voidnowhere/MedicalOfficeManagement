@@ -178,8 +178,10 @@ public class PatientRecordGUI extends JFrame {
             if (!e.getValueIsAdjusting()){
                 return;
             }
-            new UpdateDocumentGUI(this, documentTableModel.getDocument(tableDocuments.getSelectedRow()));
-            tableDocuments.clearSelection();
+            if (tableDocuments.getSelectedRow() >= 0) {
+                new UpdateDocumentGUI(this, documentTableModel.getDocument(tableDocuments.getSelectedRow()));
+                tableDocuments.clearSelection();
+            }
         });
     }
 
