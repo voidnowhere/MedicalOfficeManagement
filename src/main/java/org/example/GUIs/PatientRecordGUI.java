@@ -13,6 +13,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PatientRecordGUI extends JFrame {
     private JPanel contentPane;
@@ -26,6 +27,9 @@ public class PatientRecordGUI extends JFrame {
     private Record record;
 
     public PatientRecordGUI() {
+        setIconImage(new ImageIcon(
+                Objects.requireNonNull(getClass().getClassLoader().getResource("images/logo.png")).getPath()
+        ).getImage());
         setResizable(false);
         setTitle("Patient Record");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -122,6 +126,14 @@ public class PatientRecordGUI extends JFrame {
 
     private void initActionsListener() {
         btnSearchRecord.addActionListener(e -> {
+            lblFullName.setText("Full Name");
+            btnUpdateDescription.setEnabled(false);
+            textAreaRecordDescription.setText("");
+            textAreaRecordDescription.setEnabled(false);
+            btnAddDocument.setEnabled(false);
+            documentTableModel.setDocuments(new ArrayList<>());
+            documentTableModel.fireTableDataChanged();
+            //
             if (textFieldNIC.getText().length() == 0) {
                 JOptionPane.showMessageDialog(this, "NIC is required!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -175,7 +187,7 @@ public class PatientRecordGUI extends JFrame {
             new AddDocumentGUI(this, record);
         });
         tableDocuments.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()){
+            if (!e.getValueIsAdjusting()) {
                 return;
             }
             if (tableDocuments.getSelectedRow() >= 0) {
