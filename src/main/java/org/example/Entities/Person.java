@@ -5,11 +5,15 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(indexes = {@Index(columnList = "type")})
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(insertable = false, updatable = false)
+    private String type;
     private String firstName;
     private String lastName;
     @Column(unique = true)
@@ -36,6 +40,10 @@ public class Person {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getFirstName() {

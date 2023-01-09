@@ -1,5 +1,6 @@
 package org.example.Entities;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
@@ -7,6 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@DiscriminatorValue("Receptionist")
 public class Receptionist extends Person {
     private String password;
     private boolean isActive;
