@@ -11,7 +11,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
-public class AddDocumentGUI extends JFrame {
+public class AddDocumentGUI extends JDialog {
     private PatientRecordGUI patientRecordGUI;
     private Record record;
     private JPanel contentPane;
@@ -20,11 +20,10 @@ public class AddDocumentGUI extends JFrame {
     private JTextArea textAreaDocumentDescription;
 
     public AddDocumentGUI(PatientRecordGUI patientRecordGUI, Record record) {
+        super(patientRecordGUI, "Add Document", true);
         this.patientRecordGUI = patientRecordGUI;
         this.record = record;
         //
-        setResizable(false);
-        setTitle("Add Document");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 450, 400);
         contentPane = new JPanel();
@@ -81,10 +80,10 @@ public class AddDocumentGUI extends JFrame {
         );
         contentPane.setLayout(gl_contentPane);
         //
-        this.setLocationRelativeTo(this.patientRecordGUI);
-        this.setVisible(true);
-        //
         initActionsListener();
+        //
+        setLocationRelativeTo(this.patientRecordGUI);
+        setVisible(true);
     }
 
     private void initActionsListener() {

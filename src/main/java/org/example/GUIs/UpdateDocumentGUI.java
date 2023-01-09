@@ -19,7 +19,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.util.Objects;
 
-public class UpdateDocumentGUI extends JFrame {
+public class UpdateDocumentGUI extends JDialog {
     private PatientRecordGUI patientRecordGUI;
     private Document document;
     private Patient patient;
@@ -28,12 +28,11 @@ public class UpdateDocumentGUI extends JFrame {
     private JButton btnUpdateDocument, btnSaveDocument;
 
     public UpdateDocumentGUI(PatientRecordGUI patientRecordGUI, Document document, Patient patient) {
+        super(patientRecordGUI, "Update Document", true);
         this.patientRecordGUI = patientRecordGUI;
         this.document = document;
         this.patient = patient;
         //
-        setResizable(false);
-        setTitle("Update Document");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
@@ -77,10 +76,10 @@ public class UpdateDocumentGUI extends JFrame {
         );
         contentPane.setLayout(gl_contentPane);
         //
-        setLocationRelativeTo(null);
-        setVisible(true);
-        //
         initActionsListener();
+        //
+        setLocationRelativeTo(this.patientRecordGUI);
+        setVisible(true);
     }
 
     private void initActionsListener() {
