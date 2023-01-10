@@ -17,6 +17,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Objects;
 
 public class UpdateDocumentGUI extends JDialog {
@@ -43,6 +44,7 @@ public class UpdateDocumentGUI extends JDialog {
         JLabel lblNewLabel = new JLabel("Description");
 
         textAreaDocumentDescription = new JTextArea(document.getDescription());
+        JScrollPane scrollPaneTextAreaDocumentDescription = new JScrollPane(textAreaDocumentDescription);
 
         btnUpdateDocument = new JButton("Update");
 
@@ -53,7 +55,7 @@ public class UpdateDocumentGUI extends JDialog {
                         .addGroup(gl_contentPane.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-                                        .addComponent(textAreaDocumentDescription, GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+                                        .addComponent(scrollPaneTextAreaDocumentDescription, GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
                                         .addGroup(gl_contentPane.createSequentialGroup()
                                                 .addComponent(lblNewLabel)
                                                 .addPreferredGap(ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
@@ -71,7 +73,7 @@ public class UpdateDocumentGUI extends JDialog {
                                         .addComponent(btnSaveDocument)
                                         .addComponent(btnUpdateDocument))
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
-                                .addComponent(textAreaDocumentDescription, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                                .addComponent(scrollPaneTextAreaDocumentDescription, GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
                                 .addContainerGap())
         );
         contentPane.setLayout(gl_contentPane);
@@ -105,7 +107,7 @@ public class UpdateDocumentGUI extends JDialog {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save Document");
             fileChooser.setFileFilter(new FileNameExtensionFilter("PDF File", "pdf"));
-            fileChooser.setSelectedFile(new File(documentType + " " +patient.getFullName() + " " + document.getDateTime().toLocalDate().toString()));
+            fileChooser.setSelectedFile(new File(documentType + " " + patient.getFullName() + " " + document.getDateTime().toLocalDate().toString()));
             if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 try {
                     PDDocument pdfDocument = new PDDocument();
@@ -133,10 +135,55 @@ public class UpdateDocumentGUI extends JDialog {
                     contentStream.endText();
                     // Document description
                     contentStream.setFont(PDType1Font.HELVETICA, 14);
-                    contentStream.beginText();
-                    contentStream.newLineAtOffset(50, pdfPage.getMediaBox().getHeight() - 250);
-                    contentStream.showText(document.getDescription().replace("\n", ""));
-                    contentStream.endText();
+                    String[] lines = document.getDescription().split("\n");
+                    float writeY = pdfPage.getMediaBox().getHeight() - 250;
+                    for (String line : lines) {
+                        contentStream.beginText();
+                        contentStream.newLineAtOffset(80, writeY);
+                        writeY -= 20;
+                        contentStream.showText(line);
+                        contentStream.endText();
+                    }
+                    /*
+                    float writeY = pdfPage.getMediaBox().getHeight() - 250;
+                    float lineMaxWidth = 450;
+                    float currentLineWidth = 0;
+                    int lineWordsCount = 0;
+                    int wordsCount = 0;
+                    StringBuilder line = new StringBuilder();
+                    StringBuilder backupWords = new StringBuilder();
+                    String[] words = document.getDescription().replace("\n", "").split(" ");
+                    for (String word : words) {
+                        float wordWidth = PDType1Font.HELVETICA.getStringWidth(backupWords + " " + word + " ") / 1000 * 14;
+                        boolean written = false;
+                        lineWordsCount++;
+                        wordsCount++;
+                        if (wordWidth + currentLineWidth < lineMaxWidth) {
+                            line.append(backupWords).append(" ").append(word).append(" ");
+                            backupWords = new StringBuilder();
+                            currentLineWidth += wordWidth;
+                        } else {
+                            backupWords.append(word).append(" ");
+                            written = true;
+                            contentStream.beginText();
+                            contentStream.newLineAtOffset(80, writeY);
+                            writeY -= 20;
+                            contentStream.setWordSpacing((lineMaxWidth - currentLineWidth) / lineWordsCount);
+                            contentStream.showText(line.toString());
+                            contentStream.endText();
+                            lineWordsCount = 0;
+                            currentLineWidth = 0;
+                            line = new StringBuilder();
+                        }
+                        if (wordsCount == words.length && !written) {
+                            contentStream.beginText();
+                            contentStream.newLineAtOffset(80, writeY);
+                            writeY -= 20;
+                            contentStream.showText(line.toString());
+                            contentStream.endText();
+                        }
+                    }
+                     */
                     // Patient name
                     contentStream.setFont(PDType1Font.HELVETICA, 16);
                     contentStream.beginText();
@@ -150,13 +197,16 @@ public class UpdateDocumentGUI extends JDialog {
                     contentStream.showText(document.getDateTime().toLocalDate().toString());
                     contentStream.endText();
 
+                    // Saving pdf file
                     contentStream.close();
                     pdfDocument.save(fileChooser.getSelectedFile().getAbsolutePath() + ".pdf");
                     pdfDocument.close();
 
-                    JOptionPane.showMessageDialog(this, "Document is saved successfully!", "Document", JOptionPane.INFORMATION_MESSAGE);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                    JOptionPane.showMessageDialog(this, "Document is saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    JOptionPane.showMessageDialog(this, "A PDF document with same name is in use close it!", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception exception) {
+                    throw new RuntimeException(exception);
                 }
             }
         });
