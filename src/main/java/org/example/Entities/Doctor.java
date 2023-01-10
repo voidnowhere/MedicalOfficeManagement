@@ -11,7 +11,7 @@ import java.util.List;
 @DiscriminatorValue("Doctor")
 public class Doctor extends Person {
     private String password;
-    @OneToMany
+    @OneToMany(mappedBy = "doctor")
     private List<Consultation> consultations;
 
     public Doctor(String firstName, String lastName, String nic, String address, LocalDate birthday, String phoneNumber, String password) {

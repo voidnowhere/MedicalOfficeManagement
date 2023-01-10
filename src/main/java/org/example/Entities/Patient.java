@@ -12,9 +12,9 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("Patient")
 public class Patient extends Person {
-    @OneToOne
+    @OneToOne(mappedBy = "patient")
     private Record record;
-    @OneToMany
+    @OneToMany(mappedBy = "patient")
     private List<Consultation> consultations;
 
     public Patient(String firstName, String lastName, String nic, String address, LocalDate birthday, String phoneNumber) {

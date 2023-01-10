@@ -12,7 +12,7 @@ import java.util.List;
 public class Receptionist extends Person {
     private String password;
     private boolean isActive;
-    @OneToMany
+    @OneToMany(mappedBy = "receptionist")
     private List<Consultation> consultations;
 
     public Receptionist(String firstName, String lastName, String nic, String address, LocalDate birthday, String phoneNumber, String password, boolean isActive) {

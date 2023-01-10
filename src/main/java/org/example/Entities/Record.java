@@ -13,7 +13,7 @@ public class Record {
     private String description;
     @OneToOne
     private Patient patient;
-    @OneToMany
+    @OneToMany(mappedBy = "record")
     private List<Document> documents;
 
     public Record(String description, Patient patient) {
