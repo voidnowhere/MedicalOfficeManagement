@@ -104,6 +104,7 @@ public class AuthGUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "Verify your NIC!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            passwordField.setText("");
             // Verifying password
             if ((person instanceof Receptionist && !Objects.equals(((Receptionist) person).getPassword(), password))
                     ||
@@ -117,7 +118,9 @@ public class AuthGUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "You account is deactivated contact administration!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            // Redirect to dashboard
+            textFieldNIC.setText("");
+            setVisible(false);
+            new DashboardGUI(person);
         });
     }
 }

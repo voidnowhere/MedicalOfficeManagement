@@ -15,7 +15,7 @@ import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class PatientRecordGUI extends JFrame {
+public class PatientRecordGUI extends JDialog {
     private JPanel contentPane;
     private JTextField textFieldNIC;
     private JTable tableDocuments;
@@ -26,13 +26,12 @@ public class PatientRecordGUI extends JFrame {
     private Patient patient;
     private Record record;
 
-    public PatientRecordGUI() {
+    public PatientRecordGUI(DashboardGUI dashboardGUI) {
+        super(dashboardGUI, "Patient Record", true);
         setIconImage(new ImageIcon(
                 Objects.requireNonNull(getClass().getClassLoader().getResource("images/logo.png")).getPath()
         ).getImage());
-        setResizable(false);
-        setTitle("Patient Record");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 450, 520);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -118,10 +117,10 @@ public class PatientRecordGUI extends JFrame {
         );
         contentPane.setLayout(gl_contentPane);
         //
-        setLocationRelativeTo(null);
-        setVisible(true);
-        //
         initActionsListener();
+        //
+        setLocationRelativeTo(dashboardGUI);
+        setVisible(true);
     }
 
     private void initActionsListener() {

@@ -11,7 +11,7 @@ public class Record {
     private Long id;
     @Column(length = 2500)
     private String description;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Patient patient;
     @OneToMany(mappedBy = "record")
     private List<Document> documents;

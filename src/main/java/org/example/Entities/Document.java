@@ -15,7 +15,7 @@ public class Document {
     private String description;
     @CreationTimestamp
     private LocalDateTime dateTime;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Record record;
 
     public Document(String description, Record record) {

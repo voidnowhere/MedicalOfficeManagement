@@ -17,13 +17,13 @@ public class Consultation {
     private boolean isPaid;
     @Column(columnDefinition = "boolean default false")
     private boolean isCanceled;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Doctor doctor;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Receptionist receptionist;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Patient patient;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TypeConsultation type;
 
     public Consultation(LocalDateTime dateTime, String description, boolean nextTime, double price, Doctor doctor, Receptionist receptionist, Patient patient, TypeConsultation type) {

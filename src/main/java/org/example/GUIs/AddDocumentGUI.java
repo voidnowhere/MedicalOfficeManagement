@@ -100,7 +100,6 @@ public class AddDocumentGUI extends JDialog {
             entityManager.getTransaction().begin();
             if (comboBoxDocumentType.getSelectedIndex() == 0) { // Prescription
                 entityManager.persist(new Prescription(textAreaDocumentDescription.getText(), record));
-
             } else { // Medical Certificate
                 entityManager.persist(new MedicalCertificate(textAreaDocumentDescription.getText(), record));
             }
