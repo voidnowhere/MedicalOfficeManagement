@@ -11,7 +11,7 @@ public class TypeConsultation {
     private Long id;
     private String name;
     private double price;
-    @OneToMany
+    @OneToMany(mappedBy = "type")
     private List<Consultation> consultations;
 
     public TypeConsultation(String name, double price) {

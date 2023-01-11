@@ -24,7 +24,8 @@ public class AddDocumentGUI extends JDialog {
         this.patientRecordGUI = patientRecordGUI;
         this.record = record;
         //
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setResizable(false);
         setBounds(100, 100, 450, 400);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -100,7 +101,6 @@ public class AddDocumentGUI extends JDialog {
             entityManager.getTransaction().begin();
             if (comboBoxDocumentType.getSelectedIndex() == 0) { // Prescription
                 entityManager.persist(new Prescription(textAreaDocumentDescription.getText(), record));
-
             } else { // Medical Certificate
                 entityManager.persist(new MedicalCertificate(textAreaDocumentDescription.getText(), record));
             }

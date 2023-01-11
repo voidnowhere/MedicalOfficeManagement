@@ -3,7 +3,6 @@ package org.example.GUIs;
 import jakarta.persistence.EntityManager;
 import org.example.Entities.Receptionist;
 import org.example.Models.EntityManagerInstance;
-import org.example.Models.PatientManagementModel;
 import org.example.Models.ReceptionistTableModel;
 
 import javax.swing.*;
@@ -11,21 +10,17 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
-public class ReceptionistListGUI extends JFrame{
+public class ReceptionistListGUI extends JDialog {
     private JPanel contentPane;
     private JTable tableReceptionists;
     private JScrollPane scrollPaneReceptionists;
     private JLabel lblReceptioniststList;
-    Receptionist receptionistGUI;
-    ReceptionistTableModel receptionistTableModel ;
+    ReceptionistTableModel receptionistTableModel;
 
-    public ReceptionistListGUI(){
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public ReceptionistListGUI(DashboardGUI dashboardGUI) {
+        super(dashboardGUI, "Receptionists Management", true);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setBounds(52, 50, 598, 340);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -33,17 +28,12 @@ public class ReceptionistListGUI extends JFrame{
         setContentPane(contentPane);
 
         JButton btnADDReceptionistToList = new JButton(" ADD Receptionist");
-        btnADDReceptionistToList.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
         btnADDReceptionistToList.setFont(new Font("Tahoma", Font.BOLD, 12));
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-    lblReceptioniststList = new JLabel("Receptionists List");
+        lblReceptioniststList = new JLabel("Receptionists List");
         lblReceptioniststList.setFont(new Font("Tahoma", Font.BOLD, 15));
         EntityManager entityManager = EntityManagerInstance.getNewInstance();
-    receptionistTableModel = new ReceptionistTableModel(entityManager
+        receptionistTableModel = new ReceptionistTableModel(entityManager
                 .createQuery("select r from Receptionist r", Receptionist.class)
                 .getResultList());
         tableReceptionists = new JTable(receptionistTableModel);
@@ -52,17 +42,9 @@ public class ReceptionistListGUI extends JFrame{
         JButton btnEditReceptionist = new JButton(" Edit Receptionist");
         btnEditReceptionist.setFont(new Font("Tahoma", Font.BOLD, 12));
         JButton btnActivate = new JButton("Activation");
-        btnActivate.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
         btnActivate.setFont(new Font("Tahoma", Font.BOLD, 12));
 
         JButton btnResetPassword = new JButton("Reset Password");
-        btnResetPassword.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
         btnResetPassword.setFont(new Font("Tahoma", Font.BOLD, 12));
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(
@@ -103,17 +85,17 @@ public class ReceptionistListGUI extends JFrame{
                                 .addComponent(scrollPaneReceptionists, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE))
         );
         contentPane.setLayout(gl_contentPane);
-        setLocationRelativeTo(null);
-        setTitle("Receptionist list");
+        //
+        setLocationRelativeTo(dashboardGUI);
         setResizable(false);
-        setVisible(true);
+        //
         btnADDReceptionistToList.addActionListener(e -> {
             new AddReceptionistGUI(this);
         });
         // Edit button
         btnEditReceptionist.addActionListener(e -> {
-            if (tableReceptionists.getSelectedRow() < 0){
-                JOptionPane.showMessageDialog(this , "please select Receptionst to edit","Error", JOptionPane.ERROR_MESSAGE );
+            if (tableReceptionists.getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(this, "please select Receptionist to edit", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             new EditReceptionistGUI(receptionistTableModel.getReceptionist(tableReceptionists.getSelectedRow()), this);
@@ -121,15 +103,16 @@ public class ReceptionistListGUI extends JFrame{
         });
         // Activation btn change
         tableReceptionists.getSelectionModel().addListSelectionListener(e -> {
-            if(tableReceptionists.getSelectedRow() < 0){
+            if (tableReceptionists.getSelectedRow() < 0) {
                 btnActivate.setText("Activation");
-                return;}
-           btnActivate.setText( receptionistTableModel.getReceptionist(tableReceptionists.getSelectedRow()).isActive() ? "Deactivate" : "Activate");
+                return;
+            }
+            btnActivate.setText(receptionistTableModel.getReceptionist(tableReceptionists.getSelectedRow()).isActive() ? "Deactivate" : "Activate");
         });
         // Activation button
         btnActivate.addActionListener(e -> {
-            if (tableReceptionists.getSelectedRow() < 0){
-                JOptionPane.showMessageDialog(this , "please select receptionist to edit","Error", JOptionPane.ERROR_MESSAGE );
+            if (tableReceptionists.getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(this, "please select receptionist to edit", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             Receptionist receptionist = receptionistTableModel.getReceptionist(tableReceptionists.getSelectedRow());
@@ -138,16 +121,16 @@ public class ReceptionistListGUI extends JFrame{
             entityManager.merge(receptionist);
             entityManager.getTransaction().commit();
             JOptionPane.showMessageDialog(this
-                    ,receptionist.isActive() ? "Receptionist ACTIVATED successfully": "receptionist DEACTIVATED"
-                    ,"Done"
-                    ,JOptionPane.INFORMATION_MESSAGE);
+                    , receptionist.isActive() ? "Receptionist ACTIVATED successfully" : "receptionist DEACTIVATED"
+                    , "Done"
+                    , JOptionPane.INFORMATION_MESSAGE);
             tableReceptionists.clearSelection();
             fillReceptionistTable();
         });
         // Reset Password button
         btnResetPassword.addActionListener(e -> {
-            if (tableReceptionists.getSelectedRow() < 0){
-                JOptionPane.showMessageDialog(this , "please select receptionist to Reset Password","Error", JOptionPane.ERROR_MESSAGE );
+            if (tableReceptionists.getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(this, "please select receptionist to Reset Password", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             Receptionist receptionist = receptionistTableModel.getReceptionist(tableReceptionists.getSelectedRow());
@@ -159,10 +142,12 @@ public class ReceptionistListGUI extends JFrame{
             tableReceptionists.clearSelection();
             fillReceptionistTable();
         });
+        //
+        setVisible(true);
     }
-    // Fill patient table
-    public void fillReceptionistTable(){
 
+    // Fill patient table
+    public void fillReceptionistTable() {
         EntityManager entityManager = EntityManagerInstance.getNewInstance();
         receptionistTableModel.setReceptionists(entityManager
                 .createQuery("select r from Receptionist r", Receptionist.class)

@@ -1,7 +1,6 @@
 package org.example.GUIs;
 
 import jakarta.persistence.EntityManager;
-import org.example.Entities.Patient;
 import org.example.Entities.Receptionist;
 import org.example.Models.EntityManagerInstance;
 
@@ -13,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class EditReceptionistGUI extends JFrame{
+public class EditReceptionistGUI extends JDialog{
 
     private JPanel contentPane;
     private JTextField textField_FirstName;
@@ -23,7 +22,8 @@ public class EditReceptionistGUI extends JFrame{
     private JTextField textField_CIN;
 
     public EditReceptionistGUI(Receptionist receptionist, ReceptionistListGUI receptionistListGUI) {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        super(receptionistListGUI, "Edit Receptionist", true);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setBounds(52, 50, 337, 337);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -140,10 +140,9 @@ public class EditReceptionistGUI extends JFrame{
                                 .addContainerGap())
         );
         contentPane.setLayout(gl_contentPane);
-        setLocationRelativeTo(null);
+        //
+        setLocationRelativeTo(receptionistListGUI);
         setResizable(false);
-        setVisible(true);
-        setTitle("Edit Receptionist");
         // Fill text fields
         textField_FirstName.setText(receptionist.getFirstName());
         textField_LastName.setText(receptionist.getLastName());
@@ -178,6 +177,8 @@ public class EditReceptionistGUI extends JFrame{
             dispose();
             receptionistListGUI.fillReceptionistTable();
         });
+        //
+        setVisible(true);
     }
 }
 

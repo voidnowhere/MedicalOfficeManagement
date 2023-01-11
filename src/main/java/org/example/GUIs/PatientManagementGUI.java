@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class PatientManagementGUI extends JFrame {
+public class PatientManagementGUI extends JDialog {
     private JPanel contentPane;
     private JTextField textField_FirstName;
     private JTextField textField_LastName;
@@ -25,7 +25,8 @@ public class PatientManagementGUI extends JFrame {
     private JTextField textField_CIN;
 
     public PatientManagementGUI(PatientListGUI patientListGUI) {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        super(patientListGUI, "Add Patient", true);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setBounds(52, 50, 337, 337);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -146,9 +147,8 @@ public class PatientManagementGUI extends JFrame {
                                 .addContainerGap())
         );
         contentPane.setLayout(gl_contentPane);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(patientListGUI);
         setResizable(false);
-        setVisible(true);
         // ADD button
         btnADDPateient.addActionListener(e -> {
             if (textField_FirstName.getText().length()==0
@@ -179,6 +179,8 @@ public class PatientManagementGUI extends JFrame {
             dispose();
             patientListGUI.fillPatientsTable();
         });
+        //
+        setVisible(true);
     }
 }
 

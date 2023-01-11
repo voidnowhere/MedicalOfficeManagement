@@ -1,9 +1,6 @@
 package org.example.Entities;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -12,9 +9,9 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("Patient")
 public class Patient extends Person {
-    @OneToOne
+    @OneToOne(mappedBy = "patient", fetch = FetchType.LAZY)
     private Record record;
-    @OneToMany
+    @OneToMany(mappedBy = "patient")
     private List<Consultation> consultations;
 
     public Patient(String firstName, String lastName, String nic, String address, LocalDate birthday, String phoneNumber) {

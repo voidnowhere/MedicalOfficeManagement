@@ -12,8 +12,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class EditPtientGUI extends JFrame {
-
+public class EditPatientGUI extends JDialog {
     private JPanel contentPane;
     private JTextField textField_FirstName;
     private JTextField textField_LastName;
@@ -21,8 +20,9 @@ public class EditPtientGUI extends JFrame {
     private JTextField textField_PhoneNumber;
     private JTextField textField_CIN;
 
-    public EditPtientGUI(Patient patient, PatientListGUI patientListGUI) {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    public EditPatientGUI(Patient patient, PatientListGUI patientListGUI) {
+        super(patientListGUI, "Edit Patient", true);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setBounds(52, 50, 337, 337);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -139,10 +139,8 @@ public class EditPtientGUI extends JFrame {
                                 .addContainerGap())
         );
         contentPane.setLayout(gl_contentPane);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(patientListGUI);
         setResizable(false);
-        setVisible(true);
-        setTitle("Edit Patient");
         // Fill text fields
         textField_FirstName.setText(patient.getFirstName());
         textField_LastName.setText(patient.getLastName());
@@ -177,5 +175,7 @@ public class EditPtientGUI extends JFrame {
             dispose();
             patientListGUI.fillPatientsTable();
         });
+        //
+        setVisible(true);
     }
 }
