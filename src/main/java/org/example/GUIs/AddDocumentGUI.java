@@ -24,7 +24,8 @@ public class AddDocumentGUI extends JDialog {
         this.patientRecordGUI = patientRecordGUI;
         this.record = record;
         //
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setResizable(false);
         setBounds(100, 100, 450, 400);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

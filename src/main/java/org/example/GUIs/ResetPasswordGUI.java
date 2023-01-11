@@ -23,7 +23,8 @@ public class ResetPasswordGUI extends JDialog {
         super(dashboardGUI, "Reset Password", true);
         this.person = person;
         //
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setResizable(false);
         setBounds(100, 100, 240, 210);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

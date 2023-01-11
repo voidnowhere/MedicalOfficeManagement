@@ -18,10 +18,10 @@ public class AuthGUI extends JFrame {
     private JPasswordField passwordField;
     private JButton btnLogin;
 
-    /**
-     * Create the frame.
-     */
     public AuthGUI() {
+        setIconImage(new ImageIcon(
+                Objects.requireNonNull(getClass().getClassLoader().getResource("images/logo.png")).getPath()
+        ).getImage());
         setTitle("Auth");
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -255,6 +255,12 @@ public class DashboardGUI extends JFrame {
         menuItemAppointmentsManagement.addActionListener(e -> {
             new AppointmentsManagementGUI(this, person);
         });
+        menuItemPatientsManagement.addActionListener(e -> {
+            new PatientListGUI(this);
+        });
+        menuItemReceptionistsManagement.addActionListener(e -> {
+            new ReceptionistListGUI(this);
+        });
     }
 
     private void fillTableAppointments() {

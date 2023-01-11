@@ -27,6 +27,7 @@ public class ProfileInformationGUI extends JDialog {
         this.person = person;
         //
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setResizable(false);
         setBounds(100, 100, 265, 320);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

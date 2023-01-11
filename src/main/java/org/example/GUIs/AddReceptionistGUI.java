@@ -1,22 +1,18 @@
 package org.example.GUIs;
 
 import jakarta.persistence.EntityManager;
-import org.example.Entities.Patient;
 import org.example.Entities.Receptionist;
 import org.example.Models.EntityManagerInstance;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class AddReceptionistGUI extends JFrame{
-
+public class AddReceptionistGUI extends JDialog {
     private JPanel contentPane;
     private JTextField textField_FirstName;
     private JTextField textField_LastName;
@@ -25,10 +21,9 @@ public class AddReceptionistGUI extends JFrame{
     private JTextField textField_CIN;
     private JPasswordField passwordField;
 
-    public AddReceptionistGUI(ReceptionistListGUI receptionistListGUI){
-
-
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    public AddReceptionistGUI(ReceptionistListGUI receptionistListGUI) {
+        super(receptionistListGUI, "Add Receptionist", true);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setBounds(52, 50, 337, 365);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -71,10 +66,6 @@ public class AddReceptionistGUI extends JFrame{
         textField_PhoneNumber.setColumns(10);
 
         JButton btnADDReceptionist = new JButton("ADD");
-        btnADDReceptionist.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
         btnADDReceptionist.setFont(new Font("Tahoma", Font.BOLD, 12));
 
         textField_CIN = new JTextField();
@@ -162,46 +153,48 @@ public class AddReceptionistGUI extends JFrame{
                                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         contentPane.setLayout(gl_contentPane);
-        setLocationRelativeTo(null);
-        setTitle("Add receptionist");
+        //
+        setLocationRelativeTo(receptionistListGUI);
         setResizable(false);
-        setVisible(true);
-    // ADD button
+        // ADD button
         btnADDReceptionist.addActionListener(e -> {
-        if (textField_FirstName.getText().length()==0
-                ||textField_LastName.getText().length()==0
-                ||textField_Address.getText().length()==0
-                ||dateField.getText().length()==0
-                ||textField_CIN.getText().length()==0
-                ||textField_PhoneNumber.getText().length()==0){
-            JOptionPane.showMessageDialog(this, "All fields are required", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-    // ADD to DataBase
-        EntityManager entityManager = EntityManagerInstance.getNewInstance();
-        long count = entityManager
-                .createQuery("select count(r) from Receptionist r where r.nic = :nic", Long.class)
-                .setParameter("nic" , textField_CIN.getText())
-                .getSingleResult();
-        if (count > 0){
-            JOptionPane.showMessageDialog(this, "NIC Already exists", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        };
-        Receptionist receptionist = new Receptionist(textField_FirstName.getText()
-                ,textField_LastName.getText()
-                ,textField_CIN.getText()
-                ,textField_Address.getText()
-                , LocalDate.parse(dateField.getText()
-                , DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                ,textField_PhoneNumber.getText(),passwordField.getText().isEmpty() ? "123456" : passwordField.getText()
-                ,false);
-        entityManager.getTransaction().begin();
-        entityManager.persist(receptionist);
-        entityManager.getTransaction().commit();
-        entityManager.close();
-        JOptionPane.showMessageDialog(this, "Receptionist created successfully", "Done", JOptionPane.INFORMATION_MESSAGE);
-        dispose();
-        receptionistListGUI.fillReceptionistTable();
-    });
-}
+            if (textField_FirstName.getText().length() == 0
+                    || textField_LastName.getText().length() == 0
+                    || textField_Address.getText().length() == 0
+                    || dateField.getText().length() == 0
+                    || textField_CIN.getText().length() == 0
+                    || textField_PhoneNumber.getText().length() == 0) {
+                JOptionPane.showMessageDialog(this, "All fields are required", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // ADD to DataBase
+            EntityManager entityManager = EntityManagerInstance.getNewInstance();
+            long count = entityManager
+                    .createQuery("select count(r) from Receptionist r where r.nic = :nic", Long.class)
+                    .setParameter("nic", textField_CIN.getText())
+                    .getSingleResult();
+            if (count > 0) {
+                JOptionPane.showMessageDialog(this, "NIC Already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            ;
+            Receptionist receptionist = new Receptionist(textField_FirstName.getText()
+                    , textField_LastName.getText()
+                    , textField_CIN.getText()
+                    , textField_Address.getText()
+                    , LocalDate.parse(dateField.getText()
+                    , DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                    , textField_PhoneNumber.getText(), passwordField.getText().isEmpty() ? "123456" : passwordField.getText()
+                    , false);
+            entityManager.getTransaction().begin();
+            entityManager.persist(receptionist);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+            JOptionPane.showMessageDialog(this, "Receptionist created successfully", "Done", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+            receptionistListGUI.fillReceptionistTable();
+        });
+        //
+        setVisible(true);
+    }
 }

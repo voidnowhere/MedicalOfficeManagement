@@ -15,16 +15,16 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class PatientListGUI extends JFrame {
+public class PatientListGUI extends JDialog {
     private JPanel contentPane;
     private JTable tablePatients;
     private JScrollPane scrollPanePatients;
     private JLabel lblPatientList;
-   PatientListGUI patientListGUI;
     PatientManagementModel patientManagementModel;
 
-    public PatientListGUI() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public PatientListGUI(DashboardGUI dashboardGUI) {
+        super(dashboardGUI, "Patients Management", true);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setBounds(52, 50, 531, 337);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -78,33 +78,32 @@ public class PatientListGUI extends JFrame {
                                 .addComponent(scrollPanePatients, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
         );
         contentPane.setLayout(gl_contentPane);
-        setLocationRelativeTo(null);
-        setTitle("Patients list");
+        setLocationRelativeTo(dashboardGUI);
         setResizable(false);
-        setVisible(true);
         // ADD button
         btnADDPatientToList.addActionListener(e -> {
             new PatientManagementGUI(this);
         });
         // Edit button
         btnEditPatient.addActionListener(e -> {
-            if (tablePatients.getSelectedRow() < 0){
-                JOptionPane.showMessageDialog(this , "please select patient to edit" );
+            if (tablePatients.getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(this, "please select patient to edit");
                 return;
             }
-            new EditPtientGUI(patientManagementModel.getPatient(tablePatients.getSelectedRow()), this);
+            new EditPatientGUI(patientManagementModel.getPatient(tablePatients.getSelectedRow()), this);
             tablePatients.clearSelection();
         });
+        //
+        setVisible(true);
     }
-    // Fill patient table
-    public void fillPatientsTable(){
 
+    // Fill patient table
+    public void fillPatientsTable() {
         EntityManager entityManager = EntityManagerInstance.getNewInstance();
         patientManagementModel.setPatients(entityManager
                 .createQuery("select p from Patient p", Patient.class)
                 .getResultList()
         );
-
         entityManager.close();
         patientManagementModel.fireTableDataChanged();
     }

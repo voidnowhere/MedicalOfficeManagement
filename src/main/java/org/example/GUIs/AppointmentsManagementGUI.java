@@ -42,6 +42,7 @@ public class AppointmentsManagementGUI extends JDialog {
         entityManager.close();
         //
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setResizable(false);
         setBounds(100, 100, 525, 375);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

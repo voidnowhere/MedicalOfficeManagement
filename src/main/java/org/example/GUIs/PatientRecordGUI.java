@@ -31,7 +31,8 @@ public class PatientRecordGUI extends JDialog {
         setIconImage(new ImageIcon(
                 Objects.requireNonNull(getClass().getClassLoader().getResource("images/logo.png")).getPath()
         ).getImage());
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setResizable(false);
         setBounds(100, 100, 450, 520);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
