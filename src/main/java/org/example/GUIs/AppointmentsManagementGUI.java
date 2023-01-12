@@ -186,7 +186,7 @@ public class AppointmentsManagementGUI extends JDialog {
                 JOptionPane.showMessageDialog(this, "Chosen when already taken!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            // check if patient has more than one consultation
+            // check if patient has a consultation in that date
             LocalDateTime from = LocalDateTime.parse(dateTime.toLocalDate().toString() + " 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             LocalDateTime to = LocalDateTime.parse(dateTime.toLocalDate().toString() + " 23:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             Long countPatientConsultations = entityManager
