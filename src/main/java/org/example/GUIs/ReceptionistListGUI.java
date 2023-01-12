@@ -95,7 +95,7 @@ public class ReceptionistListGUI extends JDialog {
         // Edit button
         btnEditReceptionist.addActionListener(e -> {
             if (tableReceptionists.getSelectedRow() < 0) {
-                JOptionPane.showMessageDialog(this, "please select Receptionist to edit", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "please select Receptionist", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             new EditReceptionistGUI(receptionistTableModel.getReceptionist(tableReceptionists.getSelectedRow()), this);
@@ -112,7 +112,7 @@ public class ReceptionistListGUI extends JDialog {
         // Activation button
         btnActivate.addActionListener(e -> {
             if (tableReceptionists.getSelectedRow() < 0) {
-                JOptionPane.showMessageDialog(this, "please select receptionist to edit", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "please select receptionist", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             Receptionist receptionist = receptionistTableModel.getReceptionist(tableReceptionists.getSelectedRow());
@@ -130,7 +130,7 @@ public class ReceptionistListGUI extends JDialog {
         // Reset Password button
         btnResetPassword.addActionListener(e -> {
             if (tableReceptionists.getSelectedRow() < 0) {
-                JOptionPane.showMessageDialog(this, "please select receptionist to Reset Password", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "please select receptionist", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             Receptionist receptionist = receptionistTableModel.getReceptionist(tableReceptionists.getSelectedRow());

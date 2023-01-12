@@ -105,6 +105,10 @@ public class EditConsultationGUI extends JDialog {
 
     private void initActionsListener() {
         btnUpdateConsultation.addActionListener(e -> {
+            if (textAreaConsultationDescription.getText().length() > 1000) {
+                JOptionPane.showMessageDialog(this, "Description must not exceed 1000 characters!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
             EntityManager entityManager = EntityManagerInstance.getNewInstance();
             entityManager.getTransaction().begin();
             consultation.setNextTime(chckbxNextTime.isSelected());
