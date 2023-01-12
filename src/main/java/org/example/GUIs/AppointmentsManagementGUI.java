@@ -150,7 +150,7 @@ public class AppointmentsManagementGUI extends JDialog {
                 return;
             }
             if (tableAppointments.getSelectedRow() < 0) {
-                JOptionPane.showMessageDialog(this, "Select is required!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Select an appointment!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             new EditConsultationGUI(this, appointmentsTableModel.getConsultation(tableAppointments.getSelectedRow()));
@@ -202,12 +202,17 @@ public class AppointmentsManagementGUI extends JDialog {
                 return;
             }
             //
-            Boolean isNextTime = entityManager
-                    .createQuery("select c.nextTime from Consultation c " +
-                            "where c.patient.id = :pid and c.isCanceled = false and c.isPaid = true " +
-                            "order by dateTime desc limit 1", Boolean.class)
-                    .setParameter("pid", patient.getId())
-                    .getSingleResult();
+            Boolean isNextTime;
+            try {
+                isNextTime = entityManager
+                        .createQuery("select c.nextTime from Consultation c " +
+                                "where c.patient.id = :pid and c.isCanceled = false and c.isPaid = true " +
+                                "order by dateTime desc limit 1", Boolean.class)
+                        .setParameter("pid", patient.getId())
+                        .getSingleResult();
+            } catch (NoResultException noResultException) {
+                isNextTime = false;
+            }
             double price = (isNextTime) ? 0 : typeConsultation.getPrice();
             entityManager.getTransaction().begin();
             Consultation consultation;
