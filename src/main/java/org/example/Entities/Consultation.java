@@ -10,6 +10,7 @@ public class Consultation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime dateTime;
+    @Column(length = 1000)
     private String description;
     private boolean nextTime;
     private double price;

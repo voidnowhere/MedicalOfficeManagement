@@ -2,6 +2,7 @@ package org.example.GUIs;
 
 import jakarta.persistence.EntityManager;
 import org.example.Entities.Patient;
+import org.example.Entities.Record;
 import org.example.Models.EntityManagerInstance;
 
 import javax.swing.*;
@@ -9,8 +10,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -69,10 +68,6 @@ public class PatientManagementGUI extends JDialog {
         textField_PhoneNumber.setColumns(10);
 
         JButton btnADDPateient = new JButton("ADD");
-        btnADDPateient.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
         btnADDPateient.setFont(new Font("Tahoma", Font.BOLD, 12));
 
         textField_CIN = new JTextField();
@@ -151,28 +146,36 @@ public class PatientManagementGUI extends JDialog {
         setResizable(false);
         // ADD button
         btnADDPateient.addActionListener(e -> {
-            if (textField_FirstName.getText().length()==0
-                ||textField_LastName.getText().length()==0
-                ||textField_Address.getText().length()==0
-                ||dateField.getText().length()==0
-                ||textField_CIN.getText().length()==0
-                ||textField_PhoneNumber.getText().length()==0){
-                    JOptionPane.showMessageDialog(this, "All fields are required", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
+            if (textField_FirstName.getText().length() == 0
+                    || textField_LastName.getText().length() == 0
+                    || textField_Address.getText().length() == 0
+                    || dateField.getText().length() == 0
+                    || textField_CIN.getText().length() == 0
+                    || textField_PhoneNumber.getText().length() == 0) {
+                JOptionPane.showMessageDialog(this, "All fields are required", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             // ADD to DataBase
             EntityManager entityManager = EntityManagerInstance.getNewInstance();
             long count = entityManager
                     .createQuery("select count(p) from Patient p where p.nic = :nic", Long.class)
-                    .setParameter("nic" , textField_CIN.getText())
+                    .setParameter("nic", textField_CIN.getText())
                     .getSingleResult();
-            if (count > 0){
+            if (count > 0) {
                 JOptionPane.showMessageDialog(this, "NIC Already exists", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
-            };
-            Patient patient = new Patient(textField_FirstName.getText(),textField_LastName.getText(),textField_CIN.getText(),textField_Address.getText(), LocalDate.parse(dateField.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),textField_PhoneNumber.getText());
+            }
+            Patient patient = new Patient(
+                    textField_FirstName.getText(),
+                    textField_LastName.getText(),
+                    textField_CIN.getText(),
+                    textField_Address.getText(),
+                    LocalDate.parse(dateField.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    textField_PhoneNumber.getText()
+            );
             entityManager.getTransaction().begin();
             entityManager.persist(patient);
+            entityManager.persist(new Record("", patient));
             entityManager.getTransaction().commit();
             entityManager.close();
             JOptionPane.showMessageDialog(this, "Patient created successfully", "Done", JOptionPane.INFORMATION_MESSAGE);
